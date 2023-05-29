@@ -1,5 +1,5 @@
 [project]
-name = "casement"
+name = "dormer"
 version = "0.1"
 authors = [
     {name = "Tom Parker-Shemilt", email = "palfrey@tevp.net"},
@@ -17,13 +17,13 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/palfrey/casement"
+Homepage = "https://github.com/palfrey/dormer"
 
 [tool.setuptools.packages.find]
-include = ["casement"]
+include = ["dormer"]
 
 [project.scripts]
-casement = "casement:main"
+dormer = "dormer:main"
 
 [[tool.mypy.overrides]]
 module = 'i3ipc'

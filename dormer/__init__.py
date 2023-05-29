@@ -60,7 +60,7 @@ def run(i3: Connection):
     hasher = hashlib.sha256()
     hasher.update(";".join(output_names).encode("utf-8"))
     key = hasher.hexdigest()
-    path = Path(f"~/.config/casement/{key}.yaml").expanduser()
+    path = Path(f"~/.config/dormer/{key}.yaml").expanduser()
     path.parent.mkdir(parents=True, exist_ok=True)
 
     if ns.command == "save":

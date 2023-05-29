@@ -8,7 +8,7 @@ import yaml
 from i3ipc import Connection
 from pyfakefs.fake_filesystem import FakeFilesystem
 
-from casement import CommandReply, OutputReply, WorkspaceReply, run
+from dormer import CommandReply, OutputReply, WorkspaceReply, run
 
 
 class MockI3(Connection):
@@ -29,11 +29,11 @@ class MockI3(Connection):
         return [CommandReply(success=True, error=None)]
 
 
-path = "/home/bar/.config/casement/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae.yaml"  # noqa: E501
+path = "/home/bar/.config/dormer/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae.yaml"  # noqa: E501
 
 
 def test_no_args(capsys: pytest.CaptureFixture):
-    with patch.object(sys, "argv", ["casement"]):
+    with patch.object(sys, "argv", ["dormer"]):
         with pytest.raises(SystemExit):
             run(MockI3())
 
@@ -45,7 +45,7 @@ def test_no_args(capsys: pytest.CaptureFixture):
 
 
 def test_save(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
-    with patch.object(sys, "argv", ["casement", "save"]):
+    with patch.object(sys, "argv", ["dormer", "save"]):
         with patch.dict(os.environ, {"HOME": "/home/bar"}, clear=True):
             run(MockI3())
 
@@ -59,7 +59,7 @@ def test_save(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
 
 
 def test_load_nothing(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
-    with patch.object(sys, "argv", ["casement", "load"]):
+    with patch.object(sys, "argv", ["dormer", "load"]):
         with patch.dict(os.environ, {"HOME": "/home/bar"}, clear=True):
             with pytest.raises(SystemExit):
                 run(MockI3())
@@ -74,7 +74,7 @@ def test_load_identical(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
         path, contents=yaml.dump({"outputs": ["foo"], "workspaces": {1: "foo"}})
     )
 
-    with patch.object(sys, "argv", ["casement", "load"]):
+    with patch.object(sys, "argv", ["dormer", "load"]):
         with patch.dict(os.environ, {"HOME": "/home/bar"}, clear=True):
             run(MockI3())
 
@@ -89,7 +89,7 @@ def test_load_different(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
     )
 
     mock_i3 = MockI3()
-    with patch.object(sys, "argv", ["casement", "load"]):
+    with patch.object(sys, "argv", ["dormer", "load"]):
         with patch.dict(os.environ, {"HOME": "/home/bar"}, clear=True):
             run(mock_i3)
 
@@ -116,7 +116,7 @@ def test_load_failure(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
             return [CommandReply(success=False, error="some error")]
 
     mock_i3 = FailingMockI3()
-    with patch.object(sys, "argv", ["casement", "load"]):
+    with patch.object(sys, "argv", ["dormer", "load"]):
         with patch.dict(os.environ, {"HOME": "/home/bar"}, clear=True):
             with pytest.raises(SystemExit):
                 run(mock_i3)
