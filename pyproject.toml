@@ -2,5 +2,9 @@
 module = 'i3ipc'
 ignore_missing_imports = true # FIXME: Blocked on https://github.com/altdesktop/i3ipc-python/pull/205
 
+[[tool.mypy.overrides]]
+module = 'pyfakefs.fake_filesystem'
+ignore_missing_imports = true # FIXME: See https://github.com/pytest-dev/pyfakefs/issues/599
+
 [tool.coverage.run]
 omit = ["test_*"]

@@ -5,25 +5,26 @@ from unittest.mock import patch
 
 import pytest
 import yaml
+from i3ipc import Connection
 from pyfakefs.fake_filesystem import FakeFilesystem
 
 from casement import CommandReply, OutputReply, WorkspaceReply, run
 
 
-class MockI3:
+class MockI3(Connection):
     def __init__(self) -> None:
         self.commands_run: List[str] = []
 
-    def get_workspaces(self) -> List[WorkspaceReply]:
+    def get_workspaces(self) -> List[WorkspaceReply]:  # type: ignore[override]
         return [
             WorkspaceReply(num=1, output="foo", focused=True, visible=True),
             WorkspaceReply(num=2, output="foo", focused=False, visible=True),
         ]
 
-    def get_outputs(self) -> List[OutputReply]:
+    def get_outputs(self) -> List[OutputReply]:  # type: ignore[override]
         return [OutputReply(name="foo")]
 
-    def command(self, cmd: str) -> List[CommandReply]:
+    def command(self, cmd: str) -> List[CommandReply]:  # type: ignore[override]
         self.commands_run.append(cmd)
         return []
 
@@ -110,7 +111,7 @@ def test_load_failure(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
     )
 
     class FailingMockI3(MockI3):
-        def command(self, cmd: str) -> List[CommandReply]:
+        def command(self, cmd: str) -> List[CommandReply]:  # type: ignore[override]
             super().command(cmd)
             return [CommandReply(success=False, error="some error")]
 
