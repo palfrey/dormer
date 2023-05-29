@@ -26,7 +26,7 @@ class MockI3(Connection):
 
     def command(self, cmd: str) -> List[CommandReply]:  # type: ignore[override]
         self.commands_run.append(cmd)
-        return []
+        return [CommandReply(success=True, error=None)]
 
 
 path = "/home/bar/.config/casement/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae.yaml"  # noqa: E501

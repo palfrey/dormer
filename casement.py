@@ -32,9 +32,10 @@ class WorkspaceReply:
 def check_command(i3: Connection, command: str):
     rets = cast(List[CommandReply], i3.command(command))
     for ret in rets:
-        if not ret.success:
-            print(f"Failed to execute '{command}': {ret.error}")
-            exit(-1)
+        if ret.success:
+            continue
+        print(f"Failed to execute '{command}': {ret.error}")
+        exit(-1)
 
 
 class Config(TypedDict):
