@@ -22,7 +22,7 @@ class MockI3(Connection):
         ]
 
     def get_outputs(self) -> List[OutputReply]:  # type: ignore[override]
-        return [OutputReply(name="foo")]
+        return [OutputReply(name="foo", active=True)]
 
     def command(self, cmd: str) -> List[CommandReply]:  # type: ignore[override]
         self.commands_run.append(cmd)

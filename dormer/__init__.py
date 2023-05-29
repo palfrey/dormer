@@ -13,6 +13,7 @@ from typing_extensions import TypedDict
 @dataclass
 class OutputReply:
     name: str
+    active: bool
 
 
 @dataclass
@@ -55,7 +56,11 @@ def run(i3: Connection):
     ns = parser.parse_args()
 
     output_names = sorted(
-        [output.name for output in outputs if not output.name.startswith("xroot")]
+        [
+            output.name
+            for output in outputs
+            if not output.name.startswith("xroot") and output.active
+        ]
     )
     hasher = hashlib.sha256()
     hasher.update(";".join(output_names).encode("utf-8"))
