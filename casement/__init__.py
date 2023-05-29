@@ -114,6 +114,10 @@ def run(i3: Connection):
         exit(-1)
 
 
-if __name__ == "__main__":  # pragma: no cover - can't seem to mock actual I3
+def main():  # pragma: no cover - can't seem to mock actual I3
     i3 = Connection()
     run(i3)
+
+
+if __name__ == "__main__":  # pragma: no cover - can't seem to mock actual I3
+    main()
