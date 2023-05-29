@@ -5,3 +5,7 @@ pip-tools
 pre-commit
 types-pyyaml
 mypy
+pytest
+pytest-cov
+pytest-watch
+pyfakefs

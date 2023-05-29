@@ -1,3 +1,6 @@
 [[tool.mypy.overrides]]
 module = 'i3ipc'
 ignore_missing_imports = true # FIXME: Blocked on https://github.com/altdesktop/i3ipc-python/pull/205
+
+[tool.coverage.run]
+omit = ["test_*"]
