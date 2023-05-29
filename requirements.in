@@ -1,4 +1,7 @@
-pip-tools
-pre-commit
 i3ipc
 pyyaml
+
+pip-tools
+pre-commit
+types-pyyaml
+mypy

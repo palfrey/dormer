@@ -2,13 +2,33 @@ import hashlib
 from argparse import ArgumentParser
 from pathlib import Path
 from sys import exit
+from typing import Dict, List, Optional, cast
 
 import yaml
 from i3ipc import Connection
+from typing_extensions import TypedDict
 
 i3 = Connection()
-workspaces = i3.get_workspaces()
-outputs = i3.get_outputs()
+
+
+class OutputReply:
+    name: str
+
+
+class CommandReply:
+    success: bool
+    error: Optional[str]
+
+
+class WorkspaceReply:
+    num: int
+    output: str
+    focused: bool
+    visible: bool
+
+
+workspaces = cast(List[WorkspaceReply], i3.get_workspaces())
+outputs = cast(List[OutputReply], i3.get_outputs())
 
 parser = ArgumentParser()
 subparsers = parser.add_subparsers(title="command", dest="subparser", required=True)
@@ -28,15 +48,20 @@ path.parent.mkdir(parents=True, exist_ok=True)
 
 
 def check_command(command: str):
-    rets = i3.command(command)
+    rets = cast(List[CommandReply], i3.command(command))
     for ret in rets:
         if not ret.success:
             print(f"Failed to execute '{command}': {ret.error}")
             exit(-1)
 
 
+class Config(TypedDict):
+    outputs: List[str]
+    workspaces: Dict[int, str]
+
+
 if ns.subparser == "save":
-    data = {"outputs": output_names, "workspaces": {}}
+    data: Config = {"outputs": output_names, "workspaces": {}}
 
     for workspace in workspaces:
         data["workspaces"][workspace.num] = workspace.output
@@ -53,7 +78,7 @@ elif ns.subparser == "load":
         print(f"No existing config for {','.join(output_names)}")
         exit(-1)
     with path.open() as f:
-        config = yaml.safe_load(f)
+        config = cast(Config, yaml.safe_load(f))
 
     existing_workspaces = dict(
         [(workspace.num, workspace.output) for workspace in workspaces]
