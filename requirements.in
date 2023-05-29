@@ -1,0 +1,4 @@
+pip-tools
+pre-commit
+i3ipc
+pyyaml
