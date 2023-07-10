@@ -97,7 +97,7 @@ def run(i3: Connection):
         ]
         changes = False
         for name, output in config["workspaces"].items():
-            if existing_workspaces[name] != output:
+            if name not in existing_workspaces or existing_workspaces[name] != output:
                 changes = True
                 for command in [
                     f"workspace {name}",
