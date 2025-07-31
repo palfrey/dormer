@@ -14,14 +14,29 @@ classifiers = [
 dependencies = [
     "i3ipc",
     "pyyaml",
-    "typing_extensions"
+    "typing_extensions",
+    "randrctl"
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit",
+"types-pyyaml",
+"mypy",
+"pytest",
+"pytest-cov",
+"pytest-watch",
+"pyfakefs",
+    ]
 
 [project.urls]
 Homepage = "https://github.com/palfrey/dormer"
 
 [tool.setuptools.packages.find]
 include = ["dormer"]
+
+[tool.uv.sources]
+randrctl = { git = "https://github.com/koiuo/randrctl.git" }
 
 [project.scripts]
 dormer = "dormer:main"
@@ -36,3 +51,10 @@ ignore_missing_imports = true # FIXME: See https://github.com/pytest-dev/pyfakef
 
 [tool.coverage.run]
 omit = ["test_*"]
+
+[tool.uv]
+python-preference = "only-managed"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
