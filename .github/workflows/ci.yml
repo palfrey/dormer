@@ -7,31 +7,27 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11']
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: pip
+    - name: Install asdf & tools
+      uses: asdf-vm/actions/install@v4
 
     - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
+      run: uv sync
 
     - name: Run mypy
       run: |
-        python -m mypy .
+        uv run mypy .
 
     - name: Run Tests
       run: |
-        coverage run --branch -m pytest -vvv
-        coverage report
-        coverage xml
+        uv run coverage run --branch -m pytest -vvv
+        uv run coverage report
+        uv run coverage xml
 
     - uses: codecov/codecov-action@v3
