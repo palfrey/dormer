@@ -50,6 +50,7 @@ def test_save(capsys: pytest.CaptureFixture, fs: FakeFilesystem):
             run(MockI3())
 
     config_file = fs.get_object(path)
+    assert config_file.contents is not None
     config = yaml.safe_load(config_file.contents)
     assert config == {"outputs": ["foo"], "workspaces": {1: "foo", 2: "foo"}}
 
