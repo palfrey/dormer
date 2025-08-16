@@ -36,7 +36,7 @@ Homepage = "https://github.com/palfrey/dormer"
 include = ["dormer"]
 
 [tool.uv.sources]
-randrctl = { git = "https://github.com/koiuo/randrctl.git" }
+randrctl = { git = "https://github.com/palfrey/randrctl.git", branch = "pytyped" }
 
 [project.scripts]
 dormer = "dormer:main"

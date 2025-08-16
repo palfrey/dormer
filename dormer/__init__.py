@@ -3,10 +3,11 @@ from argparse import ArgumentParser
 from dataclasses import dataclass
 from pathlib import Path
 from sys import exit
-from typing import Dict, List, Optional, cast
+from typing import Dict, List, Literal, Optional, cast
 
 import yaml
 from i3ipc import Connection
+from randrctl.xrandr import Xrandr
 from typing_extensions import TypedDict
 
 
@@ -40,13 +41,19 @@ def check_command(i3: Connection, command: str):
 
 
 class Config(TypedDict):
-    outputs: List[str]
-    workspaces: Dict[int, str]
+    edids: list[str]
+    workspaces: Dict[int, int]
+
+
+def hash(value: str) -> str:
+    hasher = hashlib.sha256()
+    hasher.update(value.encode("utf-8"))
+    return hasher.hexdigest()
 
 
 def run(i3: Connection):
     workspaces = cast(List[WorkspaceReply], i3.get_workspaces())
-    outputs = cast(List[OutputReply], i3.get_outputs())
+    xrandr = Xrandr(None, None)
 
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(title="commands", dest="command", required=True)
@@ -55,33 +62,29 @@ def run(i3: Connection):
 
     ns = parser.parse_args()
 
-    output_names = sorted(
-        [
-            output.name
-            for output in outputs
-            if not output.name.startswith("xroot") and output.active
-        ]
-    )
-    hasher = hashlib.sha256()
-    hasher.update(";".join(output_names).encode("utf-8"))
-    key = hasher.hexdigest()
+    raw_edids: dict[str, str] = xrandr._get_verbose_fields("EDID")
+    edids = sorted(raw_edids.values())
+    key = hash(";".join(edids))
     path = Path(f"~/.config/dormer/{key}.yaml").expanduser()
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    if ns.command == "save":
-        data: Config = {"outputs": output_names, "workspaces": {}}
+    command = cast(Literal["save"] | Literal["load"], ns.command)
+
+    if command == "save":
+        data: Config = {"edids": edids, "workspaces": {}}
 
         for workspace in workspaces:
-            data["workspaces"][workspace.num] = workspace.output
+            index = edids.index(raw_edids[workspace.output])
+            data["workspaces"][workspace.num] = index
 
         with path.open("w") as f:
             yaml.safe_dump(data, f)
 
         print(f"Saved to {path}")
 
-    elif ns.command == "load":
+    elif command == "load":
         if not path.exists():
-            print(f"No existing config for {','.join(output_names)}")
+            print(f"No existing config for {','.join(edids)}")
             exit(-1)
         with path.open() as f:
             config = cast(Config, yaml.safe_load(f))
@@ -96,12 +99,17 @@ def run(i3: Connection):
             workspace.num for workspace in workspaces if workspace.visible
         ]
         changes = False
-        for name, output in config["workspaces"].items():
-            if name not in existing_workspaces or existing_workspaces[name] != output:
+        edid_to_workspace = dict([(v, k) for (k, v) in raw_edids.items()])
+        for name, output_id in config["workspaces"].items():
+            output_name = edid_to_workspace[config["edids"][output_id]]
+            if (
+                name not in existing_workspaces
+                or existing_workspaces[name] != output_name
+            ):
                 changes = True
                 for command in [
                     f"workspace {name}",
-                    f"move workspace to output {output}",
+                    f"move workspace to output {output_name}",
                 ]:
                     check_command(i3, command)
 

@@ -368,7 +368,7 @@ dev = [
 requires-dist = [
     { name = "i3ipc" },
     { name = "pyyaml" },
-    { name = "randrctl", git = "https://github.com/koiuo/randrctl.git" },
+    { name = "randrctl", git = "https://github.com/palfrey/randrctl.git?branch=pytyped" },
     { name = "typing-extensions" },
 ]
 
@@ -1041,8 +1041,8 @@ wheels = [
 
 [[package]]
 name = "randrctl"
-version = "1.10.1.dev9"
-source = { git = "https://github.com/koiuo/randrctl.git#22997ef116820a00eed274beb7aecfd68afee3cc" }
+version = "0.0.1.dev155"
+source = { git = "https://github.com/palfrey/randrctl.git?branch=pytyped#7819379f2d03554c917f41a5192f9567b297b95e" }
 dependencies = [
     { name = "argcomplete" },
     { name = "pyyaml" },
