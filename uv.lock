@@ -368,7 +368,7 @@ dev = [
 requires-dist = [
     { name = "i3ipc" },
     { name = "pyyaml" },
-    { name = "randrctl", git = "https://github.com/palfrey/randrctl.git?branch=pytyped" },
+    { name = "randrctl", specifier = ">=1.10.0" },
     { name = "typing-extensions" },
 ]
 
@@ -1041,11 +1041,15 @@ wheels = [
 
 [[package]]
 name = "randrctl"
-version = "0.0.1.dev155"
-source = { git = "https://github.com/palfrey/randrctl.git?branch=pytyped#7819379f2d03554c917f41a5192f9567b297b95e" }
+version = "1.11.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
     { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/03/57/e78f9b5771735352e9ac38e8ff4de2a8f134dacdb52d8e5b500d38fef43c/randrctl-1.11.0.tar.gz", hash = "sha256:0cf64fb3bda3168f0e4a4e1923016724c5ab04b4667d2bd8eb7f66745219619e", size = 54018, upload-time = "2025-08-13T15:06:35.377Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4c/13/81308eeb93a697fd897d32f1940e8a3981f756ce5af69556c3c5c8bb6e7c/randrctl-1.11.0-py3-none-any.whl", hash = "sha256:0ea8b32e3d8ea0248634928beefcdd0868c6e53b49e8778a1eb34da0e8487755", size = 31965, upload-time = "2025-08-13T15:06:33.952Z" },
 ]
 
 [[package]]

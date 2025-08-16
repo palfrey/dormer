@@ -15,7 +15,7 @@ dependencies = [
     "i3ipc",
     "pyyaml",
     "typing_extensions",
-    "randrctl"
+    "randrctl >= 1.10.0"
 ]
 
 [dependency-groups]
@@ -34,9 +34,6 @@ Homepage = "https://github.com/palfrey/dormer"
 
 [tool.setuptools.packages.find]
 include = ["dormer"]
-
-[tool.uv.sources]
-randrctl = { git = "https://github.com/palfrey/randrctl.git", branch = "pytyped" }
 
 [project.scripts]
 dormer = "dormer:main"
