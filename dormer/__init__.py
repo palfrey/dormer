@@ -68,7 +68,7 @@ def run(i3: Connection):
     path = Path(f"~/.config/dormer/{key}.yaml").expanduser()
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    command = cast(Literal["save"] | Literal["load"], ns.command)
+    command = cast(Literal["save", "load"], ns.command)
 
     if command == "save":
         data: Config = {"edids": edids, "workspaces": {}}
