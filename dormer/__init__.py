@@ -107,11 +107,11 @@ def run(i3: Connection):
                 or existing_workspaces[name] != output_name
             ):
                 changes = True
-                for command in [
+                for i3_command in [
                     f"workspace {name}",
                     f"move workspace to output {output_name}",
                 ]:
-                    check_command(i3, command)
+                    check_command(i3, i3_command)
 
         if changes:
             for visible_workspace in visible_workspaces:
