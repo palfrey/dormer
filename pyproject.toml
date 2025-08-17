@@ -21,13 +21,14 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pre-commit",
-"types-pyyaml",
-"mypy",
-"pytest",
-"pytest-cov",
-"pytest-watch",
-"pyfakefs",
-    ]
+    "types-pyyaml",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "pytest-watch",
+    "pyfakefs",
+    "pytest-watcher>=0.4.3",
+]
 
 [project.urls]
 Homepage = "https://github.com/palfrey/dormer"
